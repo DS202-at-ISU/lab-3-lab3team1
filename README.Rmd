@@ -25,8 +25,16 @@ Submit a link to your repository on Canvas (only one submission per team) to sig
 Extract from the data below two data sets in long form `deaths` and `returns`
 
 ```{r}
+library(tidyverse)
+
 av <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/avengers/avengers.csv", stringsAsFactors = FALSE)
 head(av)
+
+deaths <- av %>% mutate(Time = sum(c(Death1, Death2, Death3, Death4, Death5) == "YES"))
+
+deaths
+
+
 ```
 
 Get the data into a format where the five columns for Death[1-5] are replaced by two columns: Time, and Death. Time should be a number between 1 and 5 (look into the function `parse_number`); Death is a categorical variables with values "yes", "no" and "". Call the resulting data set `deaths`. 
