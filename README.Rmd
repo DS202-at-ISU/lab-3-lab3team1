@@ -64,8 +64,8 @@ Each team member picks one of the statements in the FiveThirtyEight [analysis](h
 Grace: I counted 89 total deaths — some unlucky Avengers7 are basically Meat Loaf with an E-ZPass — and on 57 occasions the individual made a comeback. 
 
 ```{r}
-sum(av$Time)
-sum(av$RTime)
+sum(av$Death_Time)
+sum(av$Returns_Time)
 ```
 The code shows that the total number of times the avengers have died is indeed 89. The article is also correct claiming that there are 57 occasions of the avenger making a comeback.
 
