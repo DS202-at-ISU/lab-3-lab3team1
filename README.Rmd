@@ -40,6 +40,7 @@ Get the data into a format where the five columns for Death[1-5] are replaced by
 
 Similarly, deal with the returns of characters.
 ```{r}
+<<<<<<< HEAD
 av <- av %>% rowwise() %>% mutate(Returns_Time = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
 av <- av %>% rowwise() %>% mutate(Returns = Returns_Time > 0) %>% select(-c(Return1, Return2, Return3, Return4, Return5))
 av$Returns <- ifelse(av$Returns == TRUE, "yes", "no")
@@ -48,6 +49,7 @@ av
 av <- av %>% rowwise() %>% mutate(Deaths = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
 av <- av %>% rowwise() %>% mutate(Returns = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
 
+>>>>>>> b3aded60485d5a84016cfd94ee66d913984e75ae
 ```
 Based on these datasets calculate the average number of deaths an Avenger suffers. 
 The average number of avenger deaths is 0.3294798.
@@ -68,7 +70,9 @@ Grace: I counted 89 total deaths — some unlucky Avengers7 are basically Meat L
 
 ```{r}
 sum(av$Time)
+sum(av$RTime)
 ```
+The code shows that the total number of times the avengers have died is indeed 89. The article is also correct claiming that there are 57 occasions of the avenger making a comeback.
 
 
 > Quote the statement you are planning to fact-check.
