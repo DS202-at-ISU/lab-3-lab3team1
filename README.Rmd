@@ -40,7 +40,6 @@ Get the data into a format where the five columns for Death[1-5] are replaced by
 
 Similarly, deal with the returns of characters.
 ```{r}
-<<<<<<< HEAD
 av <- av %>% rowwise() %>% mutate(Returns_Time = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
 av <- av %>% rowwise() %>% mutate(Returns = Returns_Time > 0) %>% select(-c(Return1, Return2, Return3, Return4, Return5))
 av$Returns <- ifelse(av$Returns == TRUE, "yes", "no")
@@ -49,7 +48,6 @@ av
 av <- av %>% rowwise() %>% mutate(Deaths = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
 av <- av %>% rowwise() %>% mutate(Returns = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
 
->>>>>>> b3aded60485d5a84016cfd94ee66d913984e75ae
 ```
 Based on these datasets calculate the average number of deaths an Avenger suffers. 
 The average number of avenger deaths is 0.3294798.
