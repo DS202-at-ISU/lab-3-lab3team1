@@ -43,6 +43,7 @@ av = av %>%
 for(row in 1:nrow(av)){
   av$Time[row] = sum(av[row,c('Death1', 'Death2', 'Death3', 'Death4', 'Death5')] == 'YES')
 }
+av$Death <- ifelse(av$Death == TRUE, "yes", "no")
 ```
 Similarly, deal with the returns of characters.
 ```{r}
