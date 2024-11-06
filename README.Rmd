@@ -30,8 +30,8 @@ av <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/av
 head(av)
 
 
-av <- av %>% rowwise() %>% mutate(Time = sum(c(Death1, Death2, Death3, Death4, Death5) == "YES"))
-av <- av %>% rowwise() %>% mutate(Death = Time > 0)
+av <- av %>% rowwise() %>% mutate(Death_Time = sum(c(Death1, Death2, Death3, Death4, Death5) == "YES"))
+av <- av %>% rowwise() %>% mutate(Death = Death_Time > 0) %>% select(-c(Death1, Death2, Death3, Death4, Death5))
 av$Death <- ifelse(av$Death == TRUE, "yes", "no")
 av
 ```
@@ -40,15 +40,14 @@ Get the data into a format where the five columns for Death[1-5] are replaced by
 
 Similarly, deal with the returns of characters.
 ```{r}
-<<<<<<< HEAD
-av <- av %>% rowwise() %>% mutate(RTime = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
-av <- av %>% rowwise() %>% mutate(Returns = RTime > 0)
+av <- av %>% rowwise() %>% mutate(Returns_Time = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
+av <- av %>% rowwise() %>% mutate(Returns = Returns_Time > 0) %>% select(-c(Return1, Return2, Return3, Return4, Return5))
 av$Returns <- ifelse(av$Returns == TRUE, "yes", "no")
 av
-=======
+
 av <- av %>% rowwise() %>% mutate(Deaths = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
 av <- av %>% rowwise() %>% mutate(Returns = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
->>>>>>> 922b914395c68508bbefa9fcce88130b4d2370c0
+
 ```
 Based on these datasets calculate the average number of deaths an Avenger suffers. 
 The average number of avenger deaths is 0.3294798.
