@@ -65,6 +65,34 @@ head(av)
     ## 5                                                      Dies in Fear Itself brought back because that's kind of the whole point. Second death in Time Runs Out has not yet returned
     ## 6                                                                                                                                                                             <NA>
 
+``` r
+av <- av %>% rowwise() %>% mutate(Time = sum(c(Death1, Death2, Death3, Death4, Death5) == "YES"))
+av <- av %>% rowwise() %>% mutate(Death = Time > 0)
+av$Death <- ifelse(av$Death == TRUE, "yes", "no")
+av
+```
+
+    ## # A tibble: 173 × 23
+    ## # Rowwise: 
+    ##    URL                Name.Alias Appearances Current. Gender Probationary.Introl
+    ##    <chr>              <chr>            <int> <chr>    <chr>  <chr>              
+    ##  1 http://marvel.wik… "Henry Jo…        1269 YES      MALE   ""                 
+    ##  2 http://marvel.wik… "Janet va…        1165 YES      FEMALE ""                 
+    ##  3 http://marvel.wik… "Anthony …        3068 YES      MALE   ""                 
+    ##  4 http://marvel.wik… "Robert B…        2089 YES      MALE   ""                 
+    ##  5 http://marvel.wik… "Thor Odi…        2402 YES      MALE   ""                 
+    ##  6 http://marvel.wik… "Richard …         612 YES      MALE   ""                 
+    ##  7 http://marvel.wik… "Steven R…        3458 YES      MALE   ""                 
+    ##  8 http://marvel.wik… "Clinton …        1456 YES      MALE   ""                 
+    ##  9 http://marvel.wik… "Pietro M…         769 YES      MALE   ""                 
+    ## 10 http://marvel.wik… "Wanda Ma…        1214 YES      FEMALE ""                 
+    ## # ℹ 163 more rows
+    ## # ℹ 17 more variables: Full.Reserve.Avengers.Intro <chr>, Year <int>,
+    ## #   Years.since.joining <int>, Honorary <chr>, Death1 <chr>, Return1 <chr>,
+    ## #   Death2 <chr>, Return2 <chr>, Death3 <chr>, Return3 <chr>, Death4 <chr>,
+    ## #   Return4 <chr>, Death5 <chr>, Return5 <chr>, Notes <chr>, Time <int>,
+    ## #   Death <chr>
+
 Get the data into a format where the five columns for Death\[1-5\] are
 replaced by two columns: Time, and Death. Time should be a number
 between 1 and 5 (look into the function `parse_number`); Death is a
@@ -73,8 +101,72 @@ data set `deaths`.
 
 Similarly, deal with the returns of characters.
 
+``` r
+av <- av %>% rowwise() %>% mutate(RTime = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
+av <- av %>% rowwise() %>% mutate(Returns = RTime > 0)
+av$Returns <- ifelse(av$Returns == TRUE, "yes", "no")
+av
+```
+
+    ## # A tibble: 173 × 25
+    ## # Rowwise: 
+    ##    URL                Name.Alias Appearances Current. Gender Probationary.Introl
+    ##    <chr>              <chr>            <int> <chr>    <chr>  <chr>              
+    ##  1 http://marvel.wik… "Henry Jo…        1269 YES      MALE   ""                 
+    ##  2 http://marvel.wik… "Janet va…        1165 YES      FEMALE ""                 
+    ##  3 http://marvel.wik… "Anthony …        3068 YES      MALE   ""                 
+    ##  4 http://marvel.wik… "Robert B…        2089 YES      MALE   ""                 
+    ##  5 http://marvel.wik… "Thor Odi…        2402 YES      MALE   ""                 
+    ##  6 http://marvel.wik… "Richard …         612 YES      MALE   ""                 
+    ##  7 http://marvel.wik… "Steven R…        3458 YES      MALE   ""                 
+    ##  8 http://marvel.wik… "Clinton …        1456 YES      MALE   ""                 
+    ##  9 http://marvel.wik… "Pietro M…         769 YES      MALE   ""                 
+    ## 10 http://marvel.wik… "Wanda Ma…        1214 YES      FEMALE ""                 
+    ## # ℹ 163 more rows
+    ## # ℹ 19 more variables: Full.Reserve.Avengers.Intro <chr>, Year <int>,
+    ## #   Years.since.joining <int>, Honorary <chr>, Death1 <chr>, Return1 <chr>,
+    ## #   Death2 <chr>, Return2 <chr>, Death3 <chr>, Return3 <chr>, Death4 <chr>,
+    ## #   Return4 <chr>, Death5 <chr>, Return5 <chr>, Notes <chr>, Time <int>,
+    ## #   Death <chr>, RTime <int>, Returns <chr>
+
 Based on these datasets calculate the average number of deaths an
-Avenger suffers.
+Avenger suffers. The average number of avenger deaths is 0.3294798.
+
+``` r
+av
+```
+
+    ## # A tibble: 173 × 25
+    ## # Rowwise: 
+    ##    URL                Name.Alias Appearances Current. Gender Probationary.Introl
+    ##    <chr>              <chr>            <int> <chr>    <chr>  <chr>              
+    ##  1 http://marvel.wik… "Henry Jo…        1269 YES      MALE   ""                 
+    ##  2 http://marvel.wik… "Janet va…        1165 YES      FEMALE ""                 
+    ##  3 http://marvel.wik… "Anthony …        3068 YES      MALE   ""                 
+    ##  4 http://marvel.wik… "Robert B…        2089 YES      MALE   ""                 
+    ##  5 http://marvel.wik… "Thor Odi…        2402 YES      MALE   ""                 
+    ##  6 http://marvel.wik… "Richard …         612 YES      MALE   ""                 
+    ##  7 http://marvel.wik… "Steven R…        3458 YES      MALE   ""                 
+    ##  8 http://marvel.wik… "Clinton …        1456 YES      MALE   ""                 
+    ##  9 http://marvel.wik… "Pietro M…         769 YES      MALE   ""                 
+    ## 10 http://marvel.wik… "Wanda Ma…        1214 YES      FEMALE ""                 
+    ## # ℹ 163 more rows
+    ## # ℹ 19 more variables: Full.Reserve.Avengers.Intro <chr>, Year <int>,
+    ## #   Years.since.joining <int>, Honorary <chr>, Death1 <chr>, Return1 <chr>,
+    ## #   Death2 <chr>, Return2 <chr>, Death3 <chr>, Return3 <chr>, Death4 <chr>,
+    ## #   Return4 <chr>, Death5 <chr>, Return5 <chr>, Notes <chr>, Time <int>,
+    ## #   Death <chr>, RTime <int>, Returns <chr>
+
+``` r
+mean(av$Deaths)
+```
+
+    ## Warning: Unknown or uninitialised column: `Deaths`.
+
+    ## Warning in mean.default(av$Deaths): argument is not numeric or logical:
+    ## returning NA
+
+    ## [1] NA
 
 ## Individually
 
@@ -86,6 +178,16 @@ and fact checks it based on the data. Use dplyr functionality whenever
 possible.
 
 ### FiveThirtyEight Statement
+
+Grace: I counted 89 total deaths — some unlucky Avengers7 are basically
+Meat Loaf with an E-ZPass — and on 57 occasions the individual made a
+comeback.
+
+``` r
+sum(av$Time)
+```
+
+    ## [1] 89
 
 > Quote the statement you are planning to fact-check.
 
@@ -101,3 +203,29 @@ fact-checking endeavor.
 
 Upload your changes to the repository. Discuss and refine answers as a
 team.
+
+\##Blake For each team member, copy this part of the report.
+
+Each team member picks one of the statements in the FiveThirtyEight
+[analysis](https://fivethirtyeight.com/features/avengers-death-comics-age-of-ultron/)
+and fact checks it based on the data. Use dplyr functionality whenever
+possible.
+
+### FiveThirtyEight Statement
+
+> Out of 173 listed Avengers, my analysis found that 69 had died at
+> least one time after they joined the team.
+
+### Include the code
+
+``` r
+avengers.with.death = nrow(av[av$Death == "yes",])
+avengers.with.death
+```
+
+    ## [1] 69
+
+### Include your answer
+
+We can see that the number of rows with at least one death is the same
+as the number that the author found in his analysis.
