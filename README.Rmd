@@ -45,9 +45,6 @@ av <- av %>% rowwise() %>% mutate(Returns = Returns_Time > 0) %>% select(-c(Retu
 av$Returns <- ifelse(av$Returns == TRUE, "yes", "no")
 av
 
-av <- av %>% rowwise() %>% mutate(Deaths = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
-av <- av %>% rowwise() %>% mutate(Returns = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
-
 ```
 Based on these datasets calculate the average number of deaths an Avenger suffers. 
 The average number of avenger deaths is 0.3294798.
