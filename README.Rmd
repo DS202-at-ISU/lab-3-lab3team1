@@ -29,9 +29,8 @@ av <- read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/av
 head(av)
 
 
-deaths <- av %>% rowwise() %>% mutate(Time = sum(c(Death1, Death2, Death3, Death4, Death5) == "YES"))
-
-deaths
+av <- av %>% rowwise() %>% mutate(Time = sum(c(Death1, Death2, Death3, Death4, Death5) == "YES"))
+av <- av %>% rowwise() %>% mutate(Death = Time > 0)
 
 ```
 
@@ -43,6 +42,8 @@ av = av %>%
 for(row in 1:nrow(av)){
   av$Time[row] = sum(av[row,c('Death1', 'Death2', 'Death3', 'Death4', 'Death5')] == 'YES')
 }
+
+av
 ```
 Similarly, deal with the returns of characters.
 
