@@ -102,3 +102,44 @@ avengers.with.death
 ### Include your answer
 
 We can see that the number of rows with at least one death is the same as the number that the author found in his analysis.
+
+## Grace
+
+### FiveThirtyEight Statement
+
+> I counted 89 total deaths — some unlucky Avengers7 are basically Meat Loaf with an E-ZPass — and on 57 occasions the individual made a comeback. 
+
+```{r}
+sum(av$Death_Time)
+sum(av$Returns_Time)
+```
+
+The code shows that the total number of times the avengers have died is indeed 89. The article is also correct claiming that there are 57 occasions of the avenger making a comeback.
+
+
+## Nick
+
+### FiveThirtyEight Statement
+
+> There’s a 2-in-3 chance that a member of the Avengers returned from their first stint in the afterlife, but only a 50 percent chance they recovered from a second or third death.
+
+### Included code
+
+```{r}
+# number of 1st returns divided by number of 2nd deaths
+ sum(nrow(av[av$Returns_Time >= 1, "Returns_Time"])) / sum(nrow(av[av$Death_Time >= 1, "Death_Time"]))
+
+# number of 2nd returns divided by number of 2nd deaths
+ sum(nrow(av[av$Returns_Time >= 2, "Returns_Time"])) / sum(nrow(av[av$Death_Time >= 2, "Death_Time"]))
+ 
+# number of 3rd returns divided by number of 3rd deaths
+ sum(nrow(av[av$Returns_Time >= 3, "Returns_Time"])) / sum(nrow(av[av$Death_Time >= 3, "Death_Time"]))
+ 
+# number of 3rd deaths
+ nrow(av[av$Death_Time >= 3, "Death_Time"])
+
+```
+
+### Our Analysis:
+
+We find that the author was correct on all counts, though there are only two characters which have died 3 times and one of them made a comeback (Jocasta).
