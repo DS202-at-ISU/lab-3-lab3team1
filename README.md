@@ -65,6 +65,33 @@ head(av)
     ## 5                                                      Dies in Fear Itself brought back because that's kind of the whole point. Second death in Time Runs Out has not yet returned
     ## 6                                                                                                                                                                             <NA>
 
+``` r
+av <- av %>% rowwise() %>% mutate(Death_Time = sum(c(Death1, Death2, Death3, Death4, Death5) == "YES"))
+av <- av %>% rowwise() %>% mutate(Death = Death_Time > 0) %>% select(-c(Death1, Death2, Death3, Death4, Death5))
+av$Death <- ifelse(av$Death == TRUE, "yes", "no")
+av
+```
+
+    ## # A tibble: 173 × 18
+    ## # Rowwise: 
+    ##    URL                Name.Alias Appearances Current. Gender Probationary.Introl
+    ##    <chr>              <chr>            <int> <chr>    <chr>  <chr>              
+    ##  1 http://marvel.wik… "Henry Jo…        1269 YES      MALE   ""                 
+    ##  2 http://marvel.wik… "Janet va…        1165 YES      FEMALE ""                 
+    ##  3 http://marvel.wik… "Anthony …        3068 YES      MALE   ""                 
+    ##  4 http://marvel.wik… "Robert B…        2089 YES      MALE   ""                 
+    ##  5 http://marvel.wik… "Thor Odi…        2402 YES      MALE   ""                 
+    ##  6 http://marvel.wik… "Richard …         612 YES      MALE   ""                 
+    ##  7 http://marvel.wik… "Steven R…        3458 YES      MALE   ""                 
+    ##  8 http://marvel.wik… "Clinton …        1456 YES      MALE   ""                 
+    ##  9 http://marvel.wik… "Pietro M…         769 YES      MALE   ""                 
+    ## 10 http://marvel.wik… "Wanda Ma…        1214 YES      FEMALE ""                 
+    ## # ℹ 163 more rows
+    ## # ℹ 12 more variables: Full.Reserve.Avengers.Intro <chr>, Year <int>,
+    ## #   Years.since.joining <int>, Honorary <chr>, Return1 <chr>, Return2 <chr>,
+    ## #   Return3 <chr>, Return4 <chr>, Return5 <chr>, Notes <chr>, Death_Time <int>,
+    ## #   Death <chr>
+
 Get the data into a format where the five columns for Death\[1-5\] are
 replaced by two columns: Time, and Death. Time should be a number
 between 1 and 5 (look into the function `parse_number`); Death is a
@@ -73,10 +100,46 @@ data set `deaths`.
 
 Similarly, deal with the returns of characters.
 
+``` r
+av <- av %>% rowwise() %>% mutate(Returns_Time = sum(c(Return1, Return2, Return3, Return4, Return5) == "YES"))
+av <- av %>% rowwise() %>% mutate(Returns = Returns_Time > 0) %>% select(-c(Return1, Return2, Return3, Return4, Return5))
+av$Returns <- ifelse(av$Returns == TRUE, "yes", "no")
+av
+```
+
+    ## # A tibble: 173 × 15
+    ## # Rowwise: 
+    ##    URL                Name.Alias Appearances Current. Gender Probationary.Introl
+    ##    <chr>              <chr>            <int> <chr>    <chr>  <chr>              
+    ##  1 http://marvel.wik… "Henry Jo…        1269 YES      MALE   ""                 
+    ##  2 http://marvel.wik… "Janet va…        1165 YES      FEMALE ""                 
+    ##  3 http://marvel.wik… "Anthony …        3068 YES      MALE   ""                 
+    ##  4 http://marvel.wik… "Robert B…        2089 YES      MALE   ""                 
+    ##  5 http://marvel.wik… "Thor Odi…        2402 YES      MALE   ""                 
+    ##  6 http://marvel.wik… "Richard …         612 YES      MALE   ""                 
+    ##  7 http://marvel.wik… "Steven R…        3458 YES      MALE   ""                 
+    ##  8 http://marvel.wik… "Clinton …        1456 YES      MALE   ""                 
+    ##  9 http://marvel.wik… "Pietro M…         769 YES      MALE   ""                 
+    ## 10 http://marvel.wik… "Wanda Ma…        1214 YES      FEMALE ""                 
+    ## # ℹ 163 more rows
+    ## # ℹ 9 more variables: Full.Reserve.Avengers.Intro <chr>, Year <int>,
+    ## #   Years.since.joining <int>, Honorary <chr>, Notes <chr>, Death_Time <int>,
+    ## #   Death <chr>, Returns_Time <int>, Returns <chr>
+
 Based on these datasets calculate the average number of deaths an
 Avenger suffers.
 
+The average number of avenger deaths is 0.5144509.
+
+``` r
+mean(av$Death_Time)
+```
+
+    ## [1] 0.5144509
+
 ## Individually
+
+## Blake
 
 For each team member, copy this part of the report.
 
@@ -87,17 +150,87 @@ possible.
 
 ### FiveThirtyEight Statement
 
-> Quote the statement you are planning to fact-check.
+> Out of 173 listed Avengers, my analysis found that 69 had died at
+> least one time after they joined the team.
 
 ### Include the code
 
-Make sure to include the code to derive the (numeric) fact for the
-statement
+``` r
+avengers.with.death = nrow(av[av$Death == "yes",])
+avengers.with.death
+```
+
+    ## [1] 69
 
 ### Include your answer
 
-Include at least one sentence discussing the result of your
-fact-checking endeavor.
+We can see that the number of rows with at least one death is the same
+as the number that the author found in his analysis.
 
-Upload your changes to the repository. Discuss and refine answers as a
-team.
+## Grace
+
+### FiveThirtyEight Statement
+
+> I counted 89 total deaths — some unlucky Avengers7 are basically Meat
+> Loaf with an E-ZPass — and on 57 occasions the individual made a
+> comeback.
+
+``` r
+sum(av$Death_Time)
+```
+
+    ## [1] 89
+
+``` r
+sum(av$Returns_Time)
+```
+
+    ## [1] 57
+
+The code shows that the total number of times the avengers have died is
+indeed 89. The article is also correct claiming that there are 57
+occasions of the avenger making a comeback.
+
+## Nick
+
+### FiveThirtyEight Statement
+
+> There’s a 2-in-3 chance that a member of the Avengers returned from
+> their first stint in the afterlife, but only a 50 percent chance they
+> recovered from a second or third death.
+
+### Included code
+
+``` r
+# number of 1st returns divided by number of 2nd deaths
+ sum(nrow(av[av$Returns_Time >= 1, "Returns_Time"])) / sum(nrow(av[av$Death_Time >= 1, "Death_Time"]))
+```
+
+    ## [1] 0.6666667
+
+``` r
+# number of 2nd returns divided by number of 2nd deaths
+ sum(nrow(av[av$Returns_Time >= 2, "Returns_Time"])) / sum(nrow(av[av$Death_Time >= 2, "Death_Time"]))
+```
+
+    ## [1] 0.5
+
+``` r
+# number of 3rd returns divided by number of 3rd deaths
+ sum(nrow(av[av$Returns_Time >= 3, "Returns_Time"])) / sum(nrow(av[av$Death_Time >= 3, "Death_Time"]))
+```
+
+    ## [1] 0.5
+
+``` r
+# number of 3rd deaths
+ nrow(av[av$Death_Time >= 3, "Death_Time"])
+```
+
+    ## [1] 2
+
+### Our Analysis:
+
+We find that the author was correct on all counts, though there are only
+two characters which have died 3 times and one of them made a comeback
+(Jocasta).
